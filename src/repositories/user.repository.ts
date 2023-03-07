@@ -40,12 +40,7 @@ export const getAllUsers = async function ({
   getAllUserDto: GetAllUserDto;
 }): Promise<any> {
   try {
-    const {
-      keyWord = "",
-      filter = 1,
-      page = 1,
-      pageSize = 10,
-    } = getAllUserDto;
+    const { keyWord = "", filter = 1, page = 1, pageSize = 10 } = getAllUserDto;
     const offset = (page - 1) * pageSize;
     const limit = pageSize;
 
@@ -57,20 +52,53 @@ export const getAllUsers = async function ({
     };
 
     const result = await User.findAndCountAll({
-      where:  { full_name: keyWord ? { [Op.like]: `%${keyWord}%` } : "" },
+      where: { full_name: keyWord ? { [Op.like]: `%${keyWord}%` } : "" },
       include: ["country"],
       offset,
       limit,
-      order: filter === 1 ?[ ['created_at', 'DESC']] : [["country.code", "DESC"]]
+      order:
+        filter === 1 ? [["created_at", "DESC"]] : [["country", "code", "ASC"]],
     });
 
     return {
       page: page,
       pageSize,
       result: result.rows,
-      total_item: result.count
+      total_item: result.count,
     };
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const updateUser = async ({
+  id,
+  userUpdateDto,
+}: {
+  id: number;
+  userUpdateDto: UserInput;
+}) => {
+  try {
+    const userUpdate = await User.findOne({ where: { id } });
+
+    if (!userUpdate) throw new Error("User not found!!!");
+
+    Object.assign(userUpdate, userUpdateDto);
+
+    return await userUpdate.save();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteUser = async ({ id }: { id: number }) => {
+  try {
+    const userDelete = await User.findOne({ where: { id } });
+
+    if (!userDelete) throw new Error("User not found!!!");
+
+    return await User.destroy({ where: { id } });
+  } catch (error) {
+    console.log(error);
   }
 };

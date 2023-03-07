@@ -22,6 +22,8 @@ export const init = async function (): Promise<any> {
   server.route(countryRoutes);
   server.route(userRoutes);
 
+  server.log(['test', 'error'], 'Test event');
+  
   return server;
 };
 
