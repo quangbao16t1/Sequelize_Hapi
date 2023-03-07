@@ -1,6 +1,6 @@
 import { Op } from "sequelize";
-import Country from "../models/countries";
-import User from "../models/users";
+import Country from "../db/models/countries";
+import User from "../db/models/users";
 
 export interface UserInput {
   full_name: string;

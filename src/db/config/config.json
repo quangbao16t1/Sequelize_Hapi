@@ -1,0 +1,10 @@
+ {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "new_demo",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+     "seederStorage": "json",
+     "seederStoragePath": "sequelizeData.json",
+     "seederStorageTableName": "sequelize_data"
+}

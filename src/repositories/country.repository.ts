@@ -1,4 +1,4 @@
-import Country, { CountryOuput } from "../models/countries";
+import Country, { CountryOuput } from "../db/models/countries";
 import { Op } from "sequelize";
 
 export interface CountryInput {
